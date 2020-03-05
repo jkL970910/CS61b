@@ -24,14 +24,14 @@ public class Planet{
 	}
 
 	public double calcDistance(Planet p){
-		double DistanceX = Math.pow((xxPos - p.xxPos)*(xxPos - p.xxPos) + (yyPos - p.yyPos)*(yyPos - p.yyPos).0.5);
+		double DistanceX = Math.pow((xxPos - p.xxPos)*(xxPos - p.xxPos) + (yyPos - p.yyPos)*(yyPos - p.yyPos), 0.5);
 		return DistanceX;
 	}
 
 	public double calcForceExertedBy(Planet p){
 		double R = calcDistance(p);
 		double G = 6.67e-11;
-		double Force = G * mass * p.mass / R;
+		double Force = G * mass * p.mass / (R * R);
 		return Force;
 	}
 
@@ -43,7 +43,7 @@ public class Planet{
 
 	public double calcForceExertedByY(Planet p){
 		double Ry = p.yyPos - yyPos;
-		double ForceY = calcForceExertedBy(p) * Ry / Math.pow(calcDistance(p),0.5);
+		double ForceY = calcForceExertedBy(p) * Ry / calcDistance(p);
 		return ForceY;
 	}
 
