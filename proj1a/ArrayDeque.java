@@ -9,9 +9,9 @@ public class ArrayDeque<T> {
     /*Create an empty ArrayDeque*/
     
     public ArrayDeque() {
-        items = (T []) new Object[8];
+        items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 7;
+        nextFirst = 0;
         nextLast = 1;
     }
 
@@ -47,11 +47,11 @@ public class ArrayDeque<T> {
 
     private void adjustSize() {
         R = size / items.length;
-        if (R < 0.25) {
-            resize(size / 2);
+        if (items.length >= 16 && R < 0.25) {
+            resize(items.length / 2);
         }
         if (isFull()) {
-            resize(size * R);
+            resize(size * 2);
         }
     }
 
