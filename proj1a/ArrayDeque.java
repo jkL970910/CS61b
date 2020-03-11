@@ -1,15 +1,15 @@
-public class ArrayDeque<Typename> {
+public class ArrayDeque<T> {
 
     private int size;
     private int R;
     private int nextFirst;
     private int nextLast;
-    private Typename[] items;
+    private T[] items;
     
     /*Create an empty ArrayDeque*/
     
     public ArrayDeque() {
-        items = (Typename []) new Object[8];
+        items = (T []) new Object[8];
         size = 0;
         nextFirst = 7;
         nextLast = 1;
@@ -34,7 +34,7 @@ public class ArrayDeque<Typename> {
     }
 
     private void resize(int capacity) {
-        Typename[] newDeque = (Typename[]) new Object[capacity];
+        T[] newDeque = (T[]) new Object[capacity];
         int oldIndex = plusOne(nextFirst);
         for (int i = 0; i < size; i++) {
             newDeque[i] = items[oldIndex];
@@ -59,14 +59,14 @@ public class ArrayDeque<Typename> {
         return size;
     }
 
-    public void addFirst(Typename item) {
+    public void addFirst(T item) {
         adjustSize();
         items[nextFirst] = item;
         nextFirst = plusOne(nextFirst);
         size += 1;
     }
 
-    public void addLast(Typename item) {
+    public void addLast(T item) {
         adjustSize();
         items[nextLast] = item;
         nextLast = plusOne(nextLast);
@@ -80,10 +80,10 @@ public class ArrayDeque<Typename> {
         System.out.println();
     }
 
-    public Typename removeFirst() {
+    public T removeFirst() {
         adjustSize();
         nextFirst = plusOne(nextFirst);
-        Typename toRemove = items[nextFirst];
+        T toRemove = items[nextFirst];
         items[nextFirst] = null;
         if (!isEmpty()) {
             size -= 1;
@@ -92,10 +92,10 @@ public class ArrayDeque<Typename> {
         return toRemove;
     }
 
-    public Typename removeLast() {
+    public T removeLast() {
         adjustSize();
         nextLast = minusOne(nextLast);
-        Typename toRemove = items[nextLast];
+        T toRemove = items[nextLast];
         items[nextLast] = null;
         if (!isEmpty()) {
             size -= 1;
@@ -104,7 +104,7 @@ public class ArrayDeque<Typename> {
         return toRemove;
     }
 
-    public Typename get(int index) {
+    public T get(int index) {
         if (index >= size) {
             return null;
         }

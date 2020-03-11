@@ -1,11 +1,11 @@
-public class LinkedListDeque<Typename> {
+public class LinkedListDeque<T> {
 
-    public class TNode {
+    private class TNode {
         private TNode prev;
-        private Typename item;
+        private T item;
         private TNode next;
 
-        private TNode(TNode p, Typename i, TNode n) {
+        private TNode(TNode p, T i, TNode n) {
             prev = p;
             item = i;
             next = n;
@@ -29,7 +29,7 @@ public class LinkedListDeque<Typename> {
     * Adds an item of type Typename to the front
     * of the deque
     */
-    public void addFirst(Typename x) {
+    public void addFirst(T x) {
         sentinel.next = new TNode(sentinel, x, sentinel.next); //此处记住是右边先赋值后再赋值给左边
         sentinel.next.next.prev = sentinel.next;
         size += 1;
@@ -39,8 +39,8 @@ public class LinkedListDeque<Typename> {
     * Add an item of type Typename to the back
     * of the deque
     */
-    public void addLast(Typename x) {
-        sentinel.prev = new TNode(sentinel.prev, x , sentinel);
+    public void addLast(T x) {
+        sentinel.prev = new TNode(sentinel.prev, x, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
         size += 1;
     }
@@ -55,7 +55,7 @@ public class LinkedListDeque<Typename> {
     /*
     Returns the number of items in the deque
     */
-    public  int size() {
+    public int size() {
         return size;
 
     }
@@ -64,8 +64,8 @@ public class LinkedListDeque<Typename> {
     Removes and returns the item at the front of the deque.
     If no such item exists, return null
     */
-    public Typename removeFirst() {
-        Typename removeItem = sentinel.next.item;
+    public T removeFirst() {
+        T removeItem = sentinel.next.item;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
         if (!isEmpty()) {
@@ -79,8 +79,8 @@ public class LinkedListDeque<Typename> {
     Removes and returns the item at the last of the deque.
     If no such item exists, return null
     */
-    public Typename removeLast() {
-        Typename removeItem = sentinel.prev.item;
+    public T removeLast() {
+        T removeItem = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
         if (!isEmpty()) {
@@ -95,7 +95,7 @@ public class LinkedListDeque<Typename> {
     */
     public void printDeque() { //创建一个指向sentinel.next的list，取出item后即指向next
         TNode toPrint = sentinel.next;
-        for (int i = 0; i < size; i ++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(toPrint.item + " ");
             toPrint = toPrint.next;
         }
@@ -107,7 +107,7 @@ public class LinkedListDeque<Typename> {
     1 is the next item and so forth. If no such item exists,
     returns null. Must not alter the deque!
     */
-    public Typename get(int index) {
+    public T get(int index) {
         TNode getItem = sentinel.next;
         for (int i = 0; i < index; i++) {
             getItem = getItem.next;
@@ -118,16 +118,15 @@ public class LinkedListDeque<Typename> {
     /*
     The same as get(), but uses recursion
     */
-    private Typename getRecursiveHelper(int index, TNode getItemR) {
+    private T getRecursiveHelper(int index, TNode getItemR) {
         if (index == 0) {
             return getItemR.item;
-        }
-        else {
+        }else {
             return getRecursiveHelper(index - 1, getItemR.next);
         }
     }
 
-    public Typename getRecursive(int index) {
+    public T getRecursive(int index) {
         return getRecursiveHelper(index, sentinel.next);
     }
 
