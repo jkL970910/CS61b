@@ -59,16 +59,16 @@ public class ArrayDeque<T> {
         return size;
     }
 
-    public void addFirst(T item) {
+    public void addFirst(T x) {
         adjustSize();
-        items[nextFirst] = item;
-        nextFirst = plusOne(nextFirst);
+        items[nextFirst] = x;
+        nextFirst = minusOne(nextFirst);
         size += 1;
     }
 
-    public void addLast(T item) {
+    public void addLast(T x) {
         adjustSize();
-        items[nextLast] = item;
+        items[nextLast] = x;
         nextLast = plusOne(nextLast);
         size += 1;
     }
