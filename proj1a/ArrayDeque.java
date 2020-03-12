@@ -1,7 +1,7 @@
 public class ArrayDeque<T> {
 
     private int size;
-    private int R;
+    private double R;
     private int nextFirst;
     private int nextLast;
     private T[] items;
@@ -46,7 +46,7 @@ public class ArrayDeque<T> {
     }
 
     private void adjustSize() {
-        R = size / items.length;
+        R = (double)size / (double)items.length;
         if (items.length >= 16 && R < 0.25) {
             resize(items.length / 2);
         }
