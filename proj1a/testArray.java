@@ -1,4 +1,4 @@
-public class testArray {
+public class TestArray {
     public static void main(String[] args) {
         testAddArray();
         testRemoveArray();
@@ -32,7 +32,7 @@ public class testArray {
         ArrayDeque<Integer> A = new ArrayDeque<>();
         boolean passed = checkEmpty(true, A.isEmpty());
 
-        for(int i = 1; i < 10; i ++) {
+        for (int i = 1; i < 10; i++) {
             A.addFirst(i);
             A.addLast(i);
         }
