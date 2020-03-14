@@ -22,8 +22,8 @@ public class TestArrayDequeGold {
             int expected = ads.get(i);
             //assertEquals(String message, int expected, int actual)
             //if the compare returns true, the message won't be mentioned
-            assertEquals("Error!\nThe addLast() test Failed:\n Random Number " + expected
-                    + " is not equal to " + actual + " !", expected, actual);
+            assertEquals("Error!\nYour addLast() Failed:\nRandom Number " + expected
+                    + " is not equal to " + actual + "!", expected, actual);
         }
 
         //test addFirst
@@ -38,8 +38,8 @@ public class TestArrayDequeGold {
             int expected = ads.get(i);
             //assertEquals(String message, int expected, int actual)
             //if the compare returns true, the message won't be mentioned
-            assertEquals("Error!\nThe addFirst() test Failed:\n Random Number " + expected
-                    + " is not equal to " + actual + " !", expected, actual);
+            assertEquals("Error!\nYour addFirst() Failed:\nRandom Number " + expected
+                    + " is not equal to " + actual + "!", expected, actual);
         }
 
         //test removeFirst
@@ -52,8 +52,8 @@ public class TestArrayDequeGold {
         for (int i = 0; i < 10; i++) {
             int actual = sad.get(i);
             int expected = ads.get(i);
-            assertEquals("Error!\nThe removeFirst() Failed: \n Random number " + expected
-                    + " is not equal to " + actual + " !", expected, actual);
+            assertEquals("Error!\nYour removeFirst() Failed: \nRandom number " + expected
+                    + " is not equal to " + actual + "!", expected, actual);
         }
 
         //test removeLast
@@ -65,12 +65,12 @@ public class TestArrayDequeGold {
         }
         int actual = sad.size();
         int expected = ads.size();
-        assertEquals("Error!\nThe removeLast() test size " + actual
-                + " is not equal to " + expected + " !", expected, actual);
+        assertEquals("Error!\nYour removeLast() Failed:\nRandom number " + expected
+                + " is not equal to " + actual + " !", expected, actual);
         for (int i = 0; i < 10; i++) {
-            assertEquals("Error!\nThe removeLast() test Failed:\n Random number "
+            assertEquals("Error!\nYour removeLast() Failed:\nRandom number "
                     + expectedList.get(i) + " is not equal to " + actualList.get(i)
-                    + " !", expectedList.get(i), actualList.get(i));
+                    + "!", expectedList.get(i), actualList.get(i));
         }
 
     }
