@@ -12,8 +12,9 @@ public class Palindrome {
 
     //recursive method
     private boolean isPalindrome(Deque<Character> wordInDeque) {
-        while(wordInDeque.size() > 1) {
-            return wordInDeque.removeFirst() == wordInDeque.removeLast() && isPalindrome(wordInDeque);
+        while (wordInDeque.size() > 1) {
+            return wordInDeque.removeFirst()
+                    == wordInDeque.removeLast() && isPalindrome(wordInDeque);
         }
         return true;
     }
@@ -25,7 +26,8 @@ public class Palindrome {
     //To determine whether a word is a off-by-one Palindrome
     private boolean isPalindrome(Deque<Character> wordInDeque, CharacterComparator cc) {
         while (wordInDeque.size() > 1) {
-            return cc.equalChars(wordInDeque.removeFirst(), wordInDeque.removeLast()) && isPalindrome(wordInDeque, cc);
+            return cc.equalChars(wordInDeque.removeFirst(), wordInDeque.removeLast())
+                    && isPalindrome(wordInDeque, cc);
         }
 
         return true;

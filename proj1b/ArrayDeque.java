@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-
 public class ArrayDeque<T> implements Deque<T> {
 
     private int size;

@@ -7,11 +7,11 @@ public class TestOffByN {
 
     @Test
     public void testEqualChars() {
-        assertTrue(offBy4.equalChars('a','e'));
-        assertTrue(offBy4.equalChars('A','E'));
-        assertTrue(offBy4.equalChars('e','a'));
-        assertTrue(offBy4.equalChars('1','5'));
-        assertTrue(offBy4.equalChars('5','1'));
+        assertTrue(offBy4.equalChars('a', 'e'));
+        assertTrue(offBy4.equalChars('A', 'E'));
+        assertTrue(offBy4.equalChars('e', 'a'));
+        assertTrue(offBy4.equalChars('1', '5'));
+        assertTrue(offBy4.equalChars('5', '1'));
     }
 
 }

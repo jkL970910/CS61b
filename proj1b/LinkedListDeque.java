@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class LinkedListDeque<T> implements Deque<T> {
 
     private class TNode {

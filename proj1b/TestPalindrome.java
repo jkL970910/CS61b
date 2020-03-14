@@ -29,7 +29,7 @@ public class TestPalindrome {
     @Test
     public void testisPalindrome2() {
         OffByOne obo = new OffByOne();
-        if((palindrome.isPalindrome("12345432", obo))) {
+        if ((palindrome.isPalindrome("12345432", obo))) {
             System.out.println("The word is Off-by-One Palindrome");
         } else {
             System.out.println("The word is not Off-by-One Palindrome");
