@@ -65,10 +65,10 @@ public class TestArrayDequeGold {
         }
         int actual = sad.size();
         int expected = ads.size();
-        assertEquals("Oh noooo!\nThis is bad in removeLast:\n   Random number " + actual
+        assertEquals("Oh noooo!\nThis is bad in removeLast():\n   Random number " + actual
                 + " is not equal to " + expected + " !", expected, actual);
         for (int i = 0; i < 10; i++) {
-            assertEquals("Oh noooo!\nThis is bad in removeLast:\n   Random number "
+            assertEquals("Oh noooo!\nThis is bad in removeLast():\n   Random number "
                     + actualList.get(i) + " is not equal to " + expectedList.get(i)
                     + "!", expectedList.get(i), actualList.get(i));
         }
