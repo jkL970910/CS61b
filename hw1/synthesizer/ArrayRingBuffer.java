@@ -34,7 +34,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * throw new RuntimeException("Ring buffer overflow"). Exceptions
      * covered Monday.
      */
-   @Override
+    @Override
     public void enqueue(T x) {
         if (isFull()) {
             throw new RuntimeException("Ring Buffer Overflow");
