@@ -21,6 +21,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         first = 0;
         last = 0;
         this.fillCount = 0;
+        this.capacity = rb.length;
         // Create new array with capacity elements.
         // first, last, and fillCount should all be set to 0.
         // this.capacity should be set appropriately. Note that the local variable
@@ -33,17 +34,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * throw new RuntimeException("Ring buffer overflow"). Exceptions
      * covered Monday.
      */
-    @Override
-    public int capacity() {
-        return rb.length;
-    }
-
-    @Override
-    public int fillCount() {
-        return fillCount;
-    }
-
-    @Override
+   @Override
     public void enqueue(T x) {
         if (isFull()) {
             throw new RuntimeException("Ring Buffer Overflow");
