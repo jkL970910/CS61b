@@ -1,6 +1,6 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
+//import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import java.util.LinkedList;
@@ -70,7 +70,7 @@ public class WorldGenerator {
 
         //it would changed the rooms itself after loop if toBeConnected is set equal to rooms
         for (Room room : rooms) {
-            toBeConnected.add(room);
+            toBeConnected.offer(room);
         }
 
         while (toBeConnected.size() > 1) {
@@ -128,7 +128,7 @@ public class WorldGenerator {
     private static Queue<Room> placeRoomsToWorld(TETile[][] world, Random random) {
         List<BPSpace> space = new LinkedList<>(); //to store the partition space
         Queue<BPSpace> queue = new LinkedList<>(); //to store the space used to be partition
-        Queue<Room> rooms = new LinkedList<>();//to store the placed rooms prepared for connection
+        Queue<Room> rooms = new LinkedList<>(); //to store the placed rooms prepared for connection
 
         //set place length as world.length - 1, save place for HUD.
         //set the start point root
@@ -228,8 +228,8 @@ public class WorldGenerator {
     private static void removeRedundantWalls(TETile[][] world) {
         //traversal all the tiles and create a new neighbours array
         //set the checked point as (0, 0)
-        int[][] neighbours = new int[][]{{0, 1},{0, -1},{1, 0},{-1, 0},
-                {-1, -1},{-1, 1},{1, -1},{1, 1}};
+        int[][] neighbours = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0},
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
         for (int i = 0; i < world.length; i += 1) {
             for (int j = 0; j < world[0].length; j += 1) {
                 if (world[i][j].equals(Tileset.WALL)) {
