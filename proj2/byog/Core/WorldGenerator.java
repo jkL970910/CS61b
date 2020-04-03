@@ -17,6 +17,7 @@ import java.util.Random;
  Step 3：依次将Queue中的ROOM块压出添加到地图上，每次取两块rooms，计算中心点，并连接成floor
  Step 4：将redundant的WALL块重新设置成NOTHING，完成背景和墙面的分割
  Step 5：在建立的Room class中随机选取一个room加入人物
+ Optional: Step 6：生成随机数量的障碍物，并制定死亡规则
  */
 
 public class WorldGenerator {
@@ -41,7 +42,27 @@ public class WorldGenerator {
         Queue<Room> rooms = placeRoomsToWorld(world, random); // Step 2
         connectRoomsInWorld(world, rooms, random); // Step 3
         removeRedundantWalls(world); // Step 4
+        addMonster(world, rooms, random);
         return addPlayer(world, rooms, random); // Step 5
+
+    }
+
+    //Add random nums of monster to the world, within random place
+    private static void addMonster(TETile[][] world, Queue<Room> rooms, Random random) {
+        List<Room> birthPlaces = new ArrayList<>();
+        for (Room room : rooms) {
+            birthPlaces.add(room);
+        }
+        int count = rooms.size();
+        while (count > 0) {
+            int i = random.nextInt(count);
+            Room birthRoom = birthPlaces.get(i);
+            //Make sure that monster does not born in wall.
+            int monsterX = birthRoom.pos.x + 1 + random.nextInt(birthRoom.width - 2);
+            int monsterY = birthRoom.pos.y + 1 + random.nextInt(birthRoom.height - 2);
+            world[monsterX][monsterY] = Tileset.GRASS;
+            count -= 1;
+        }
     }
 
     //Add an avatar to the world, within a random room

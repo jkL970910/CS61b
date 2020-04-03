@@ -94,8 +94,8 @@ public class Game {
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
-            } else {
-                heartCount();
+            } else if (world[x][y].equals(Tileset.GRASS)) {
+                heartCount(x, y);
             }
         } else if (action == 'S') { // move avatar downward if there is no wall
             int x = playerPos.x;
@@ -105,8 +105,8 @@ public class Game {
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
-            } else {
-                heartCount();
+            } else if (world[x][y].equals(Tileset.GRASS)) {
+                heartCount(x, y);
             }
         } else if (action == 'A') { // move avatar upward if there is no wall
             int x = playerPos.x - 1;
@@ -116,8 +116,8 @@ public class Game {
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
-            } else {
-                heartCount();
+            } else if (world[x][y].equals(Tileset.GRASS)) {
+                heartCount(x, y);
             }
         } else if (action == 'D') { // move avatar upward if there is no wall
             int x = playerPos.x + 1;
@@ -127,8 +127,8 @@ public class Game {
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
-            } else {
-                heartCount();
+            } else if (world[x][y].equals(Tileset.GRASS)) {
+                heartCount(x, y);
             }
         }
     }
@@ -163,11 +163,13 @@ public class Game {
         playerPos = new Position(x, y); //Update player
     }
 
-    //Count the left num of heart
-    private void heartCount() {
+    //Count the left num of heart and remove the monster
+    private void heartCount(Integer x, Integer y) {
         if (HEARTNUM == 0) {
             gameOver = true;
         } else {
+            world[x][y] = Tileset.FLOOR;
+            updatePlayer(x, y);
             HEARTNUM -= 1;
         }
     }
@@ -249,7 +251,7 @@ public class Game {
         font = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(font);
         StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.text(WIDTH / 2, HEIGHT * 1 / 4, "Hit the wall will lose your heart");
+        StdDraw.text(WIDTH / 2, HEIGHT * 1 / 4, "Hit the Monsters will lose heart");
         // Reset font size to TeRenderer's default size.
         font = new Font("Monaco", Font.BOLD, TILE_SIZE - 2);
         StdDraw.setFont(font);
