@@ -49,13 +49,13 @@ public class MemoryGame {
 
     public String generateRandomString(int n) {
         //DONE: Generate random string of letters of length n
-        StringBuilder RandomString = new StringBuilder();
+        StringBuilder randomString = new StringBuilder();
         int count = 0;
         while (count < n) {
-            RandomString.append(CHARACTERS[rand.nextInt(CHARACTERS.length)]);
+            randomString.append(CHARACTERS[rand.nextInt(CHARACTERS.length)]);
             count += 1;
         }
-        return RandomString.toString();
+        return randomString.toString();
     }
 
     public void drawFrame(String s) {
@@ -81,15 +81,16 @@ public class MemoryGame {
     }
 
     public void flashSequence(String letters) {
-            //DONE: Display each character in letters, making sure to blank the screen between letters
-            for (int i = 0; i < letters.length(); i += 1) {
-                String toDisplay = Character.toString(letters.charAt(i));
-                drawFrame(toDisplay);
-                StdDraw.pause(1000); //1 second
-                drawFrame(" ");
-                StdDraw.pause(500);
-            }
+            //DONE: Display each character in letters, making sure to blank the screen
+            // between letters
+        for (int i = 0; i < letters.length(); i += 1) {
+            String toDisplay = Character.toString(letters.charAt(i));
+            drawFrame(toDisplay);
+            StdDraw.pause(1000); //1 second
+            // drawFrame(" ");
+            // StdDraw.pause(500);
         }
+    }
 
     public String solicitNCharsInput(int n) {
         //DONE: Read n letters of player input

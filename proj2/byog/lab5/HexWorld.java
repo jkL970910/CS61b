@@ -1,6 +1,6 @@
 package byog.lab5;
-import org.junit.Test;
-import static org.junit.Assert.*;
+//import org.junit.Test;
+//import static org.junit.Assert.*;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
@@ -45,7 +45,7 @@ public class HexWorld {
         }
     }
 
-    public static void addUpperHalf (TETile[][] world, int x, int y, int s, TETile tile) {
+    public static void addUpperHalf(TETile[][] world, int x, int y, int s, TETile tile) {
         //the same method as addLowerHalf, from up to the middle
         int depth = s;
 
@@ -72,13 +72,13 @@ public class HexWorld {
     @Param dis is the distance away from centre, left is negative, right is positive
      */
     private static void addColumnOfHexagons(TETile[][] world, int x, int y, int s, int dis) {
-        int NumOfHexagons = 2 * s - 1 - Math.abs(dis);
+        int numOfHexagons = 2 * s - 1 - Math.abs(dis);
         int heightOfEachHax = 2 * s;
         int startX = calcStartX(x, s, dis);
         int startY = calcStartY(y, s, dis);
         TETile tile;
 
-        for (int i = 0; i < NumOfHexagons; i += 1) {
+        for (int i = 0; i < numOfHexagons; i += 1) {
             startY += heightOfEachHax;
             tile = randomTile();
             addHexagon(world, startX, startY, s, tile);

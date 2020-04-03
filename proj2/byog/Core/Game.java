@@ -70,13 +70,7 @@ public class Game {
             if (nextAction == 'Q') {
                 record.deleteCharAt(record.length() - 1); // Remove ':' from record.
                 save(record.toString()); // Save current world state to the file.
-                StdDraw.clear(StdDraw.BLACK);
-                Font font = new Font("Monaco", Font.BOLD, 60);
-                StdDraw.setFont(font);
-                StdDraw.setPenColor(StdDraw.WHITE);
-                StdDraw.text(WIDTH / 2, HEIGHT / 2, "World Save Successful");
-                StdDraw.show();
-                StdDraw.pause(2000);
+                saveFile();
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     System.exit(0);
                 }
@@ -85,14 +79,7 @@ public class Game {
             record.deleteCharAt(record.length() - 1); // Remove 'L' from the record.
             String savedRecord = load();
             if (savedRecord.equals("")) {
-                StdDraw.clear(StdDraw.BLACK);
-                Font font = new Font("Monaco", Font.BOLD, 60);
-                StdDraw.setFont(font);
-                StdDraw.setPenColor(StdDraw.WHITE);
-                StdDraw.text(WIDTH / 2, HEIGHT * 2 / 3, "There is No File to Load");
-                StdDraw.show();
-                StdDraw.pause(2000);
-                drawStartMenu();
+                noLoadFile();
             } else {
                 world = playWithInputString(savedRecord); // Load saved world.
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
@@ -103,70 +90,85 @@ public class Game {
             int x = playerPos.x;
             int y = playerPos.y + 1;
             if (world[x][y].equals(Tileset.FLOOR)) {
-                world[x][y] = Tileset.PLAYER; //Update world
-                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
-                playerPos = new Position(x, y); //Update player
+                updatePlayer(x, y);
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
             } else {
-                if (HEARTNUM == 0) {
-                    gameOver = true;
-                } else {
-                    HEARTNUM -= 1;
-                }
+                heartCount();
             }
         } else if (action == 'S') { // move avatar downward if there is no wall
             int x = playerPos.x;
             int y = playerPos.y - 1;
             if (world[x][y].equals(Tileset.FLOOR)) {
-                world[x][y] = Tileset.PLAYER; //Update world
-                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
-                playerPos = new Position(x, y); //Update player
+                updatePlayer(x, y);
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
             } else {
-                if (HEARTNUM == 0) {
-                    gameOver = true;
-                } else {
-                    HEARTNUM -= 1;
-                }
+                heartCount();
             }
         } else if (action == 'A') { // move avatar upward if there is no wall
             int x = playerPos.x - 1;
             int y = playerPos.y;
             if (world[x][y].equals(Tileset.FLOOR)) {
-                world[x][y] = Tileset.PLAYER; //Update world
-                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
-                playerPos = new Position(x, y); //Update player
+                updatePlayer(x, y);
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
             } else {
-                if (HEARTNUM == 0) {
-                    gameOver = true;
-                } else {
-                    HEARTNUM -= 1;
-                }
+                heartCount();
             }
         } else if (action == 'D') { // move avatar upward if there is no wall
             int x = playerPos.x + 1;
             int y = playerPos.y;
             if (world[x][y].equals(Tileset.FLOOR)) {
-                world[x][y] = Tileset.PLAYER; //Update world
-                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
-                playerPos = new Position(x, y); //Update player
+                updatePlayer(x, y);
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
             } else {
-                if (HEARTNUM == 0) {
-                    gameOver = true;
-                } else {
-                    HEARTNUM -= 1;
-                }
+                heartCount();
             }
+        }
+    }
+
+    //Indicate that the game was saved successfully
+    private void saveFile() {
+        StdDraw.clear(StdDraw.BLACK);
+        Font font = new Font("Monaco", Font.BOLD, 60);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "World Save Successful");
+        StdDraw.show();
+        StdDraw.pause(2000);
+    }
+
+    //Show the player no saved file exists
+    private void noLoadFile() {
+        StdDraw.clear(StdDraw.BLACK);
+        Font font = new Font("Monaco", Font.BOLD, 60);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT * 2 / 3, "There is No File to Load");
+        StdDraw.show();
+        StdDraw.pause(2000);
+        drawStartMenu();
+    }
+
+    //Update the location of player after every movement
+    private void updatePlayer(Integer x, Integer y) {
+        world[x][y] = Tileset.PLAYER; //Update world
+        world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+        playerPos = new Position(x, y); //Update player
+    }
+
+    //Count the left num of heart
+    private void heartCount() {
+        if (HEARTNUM == 0) {
+            gameOver = true;
+        } else {
+            HEARTNUM -= 1;
         }
     }
 
