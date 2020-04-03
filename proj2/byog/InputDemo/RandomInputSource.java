@@ -1,6 +1,6 @@
 package byog.InputDemo;
 
-import edu.princeton.cs.introcs.StdDraw;
+//import edu.princeton.cs.introcs.StdDraw;
 
 import java.util.Random;
 
