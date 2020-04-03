@@ -2,8 +2,16 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
-//import byog.TileEngine.Tileset;
+import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import java.util.Random;
 import java.awt.Font;
@@ -17,7 +25,9 @@ public class Game {
 
     private TETile[][] world = new TETile[WIDTH][HEIGHT];
     private StringBuilder record = new StringBuilder();
-    private Position avatarPos = new Position(0, 0);
+    private Position playerPos = new Position(0, 0);
+    int HEARTNUM = 5;
+    boolean gameOver = false;
 
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
@@ -25,15 +35,20 @@ public class Game {
      */
     public void playWithKeyboard() {
         InputSource source = new KeyBoardInputSource();
-        boolean gameOver = false;
         ter.initialize(WIDTH, HEIGHT);
         drawStartMenu();
         while (!gameOver) {
+            if (record.length() > 0) { //Make mouse-info displayed be real-time
+                ter.renderFrame(world);
+                heartInfo();
+                tileInfo(new Position((int) StdDraw.mouseX(), (int) StdDraw.mouseY()));
+            }
             if (StdDraw.hasNextKeyTyped()) {
                 char action = source.getNextKey();
                 takeAction(source, action);
             }
         }
+        drawEndMenu();
     }
 
     // Take the action based on input source type.
@@ -45,18 +60,23 @@ public class Game {
             record.append(seed);
             record.append('S'); //Set the stop sign of the seed
             Random random = new Random(seed);
-            avatarPos = WorldGenerator.createWorld(world, random);
+            playerPos = WorldGenerator.createWorld(world, random);
             // If interacts with string, do not render.
             if (source.getClass().equals(KeyBoardInputSource.class)) {
                 ter.renderFrame(world);
             }
-        }
-        /*
-        else if (action == ':') { // Save and Quit.
+        } else if (action == ':') { // Save and Quit.
             char nextAction = source.getNextKey();
             if (nextAction == 'Q') {
                 record.deleteCharAt(record.length() - 1); // Remove ':' from record.
                 save(record.toString()); // Save current world state to the file.
+                StdDraw.clear(StdDraw.BLACK);
+                Font font = new Font("Monaco", Font.BOLD, 60);
+                StdDraw.setFont(font);
+                StdDraw.setPenColor(StdDraw.WHITE);
+                StdDraw.text(WIDTH / 2, HEIGHT / 2, "World Save Successful");
+                StdDraw.show();
+                StdDraw.pause(2000);
                 if (source.getClass().equals(KeyBoardInputSource.class)) {
                     System.exit(0);
                 }
@@ -65,16 +85,147 @@ public class Game {
             record.deleteCharAt(record.length() - 1); // Remove 'L' from the record.
             String savedRecord = load();
             if (savedRecord.equals("")) {
-                System.exit(0); // Exit if no saved data.
+                StdDraw.clear(StdDraw.BLACK);
+                Font font = new Font("Monaco", Font.BOLD, 60);
+                StdDraw.setFont(font);
+                StdDraw.setPenColor(StdDraw.WHITE);
+                StdDraw.text(WIDTH / 2, HEIGHT * 2 / 3, "There is No File to Load");
+                StdDraw.show();
+                StdDraw.pause(2000);
+                drawStartMenu();
             } else {
-                world = interactWithInputString(savedRecord); // Load saved world.
-                if (source.getClass().equals(KeyboardInputSource.class)) {
+                world = playWithInputString(savedRecord); // Load saved world.
+                if (source.getClass().equals(KeyBoardInputSource.class)) {
                     ter.renderFrame(world);
                 }
             }
+        } else if (action == 'W') { // move avatar upward if there is no wall
+            int x = playerPos.x;
+            int y = playerPos.y + 1;
+            if (world[x][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.PLAYER; //Update world
+                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                playerPos = new Position(x, y); //Update player
+                if (source.getClass().equals(KeyBoardInputSource.class)) {
+                    ter.renderFrame(world);
+                }
+            } else {
+                if (HEARTNUM == 0) {
+                    gameOver = true;
+                } else {
+                    HEARTNUM -= 1;
+                }
+            }
+        } else if (action == 'S') { // move avatar downward if there is no wall
+            int x = playerPos.x;
+            int y = playerPos.y - 1;
+            if (world[x][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.PLAYER; //Update world
+                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                playerPos = new Position(x, y); //Update player
+                if (source.getClass().equals(KeyBoardInputSource.class)) {
+                    ter.renderFrame(world);
+                }
+            } else {
+                if (HEARTNUM == 0) {
+                    gameOver = true;
+                } else {
+                    HEARTNUM -= 1;
+                }
+            }
+        } else if (action == 'A') { // move avatar upward if there is no wall
+            int x = playerPos.x - 1;
+            int y = playerPos.y;
+            if (world[x][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.PLAYER; //Update world
+                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                playerPos = new Position(x, y); //Update player
+                if (source.getClass().equals(KeyBoardInputSource.class)) {
+                    ter.renderFrame(world);
+                }
+            } else {
+                if (HEARTNUM == 0) {
+                    gameOver = true;
+                } else {
+                    HEARTNUM -= 1;
+                }
+            }
+        } else if (action == 'D') { // move avatar upward if there is no wall
+            int x = playerPos.x + 1;
+            int y = playerPos.y;
+            if (world[x][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.PLAYER; //Update world
+                world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                playerPos = new Position(x, y); //Update player
+                if (source.getClass().equals(KeyBoardInputSource.class)) {
+                    ter.renderFrame(world);
+                }
+            } else {
+                if (HEARTNUM == 0) {
+                    gameOver = true;
+                } else {
+                    HEARTNUM -= 1;
+                }
+            }
         }
+    }
 
-         */
+    //Save data to a file
+    private static void save(String record) {
+        File f = new File("./save_data.txt");
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileOutputStream fs = new FileOutputStream(f);
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            os.writeObject(record);
+            os.close();
+        }  catch (FileNotFoundException e) {
+            System.out.println("file not found");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(0);
+        }
+    }
+
+    //Load data from a file
+    private static String load() {
+        File f = new File("./save_data.txt");
+        if (f.exists()) {
+            try {
+                FileInputStream fs = new FileInputStream(f);
+                ObjectInputStream os = new ObjectInputStream(fs);
+                return (String) os.readObject();
+            } catch (FileNotFoundException e) {
+                System.out.println("file not found");
+                System.exit(0);
+            } catch (IOException e) {
+                System.out.println(e);
+                System.exit(0);
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                System.exit(0);
+            }
+        }
+        //In case no file has been saved yet, we return an empty string.
+        return "";
+    }
+
+
+    //Draw the end Menu if the LIFENUM goes to 0
+    private void drawEndMenu() {
+        StdDraw.clear(StdDraw.BLACK);
+        Font font = new Font("Monaco", Font.BOLD, 60);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT * 2 / 3, "GAME OVER");
+        font = new Font("Monaco", Font.BOLD, 40);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "You have no heart left");
+        StdDraw.show();
     }
 
     // Draw the start menu when player interacts with keyboard.
@@ -84,17 +235,36 @@ public class Game {
         Font font = new Font("Monaco", Font.BOLD, 60);
         StdDraw.setFont(font);
         StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.text(WIDTH / 2, HEIGHT * 3 / 4, "CS61B: Project 3");
+        StdDraw.text(WIDTH / 2, HEIGHT * 3 / 4, "CS61B: The Game");
         // Draw menu options.
         font = new Font("Monaco", Font.BOLD, 30);
         StdDraw.setFont(font);
         StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.text(WIDTH / 2, HEIGHT * 5 / 10, "New World (N)");
-        StdDraw.text(WIDTH / 2, HEIGHT * 4 / 10, "Load World (L)");
-        StdDraw.text(WIDTH / 2, HEIGHT * 3 / 10, "Quit (Q)");
+        StdDraw.text(WIDTH / 2, HEIGHT * 6 / 10, "New World (N)");
+        StdDraw.text(WIDTH / 2, HEIGHT * 5 / 10, "Load World (L)");
+        StdDraw.text(WIDTH / 2, HEIGHT * 4 / 10, "Quit (Q)");
+        //Draw game instructions
+        font = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT * 1 / 4, "Hit the wall will lose your heart");
         // Reset font size to TeRenderer's default size.
         font = new Font("Monaco", Font.BOLD, TILE_SIZE - 2);
         StdDraw.setFont(font);
+        StdDraw.show();
+    }
+
+    //Display the description of the pointed by mouse
+    private void tileInfo(Position mousePos) {
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.textLeft(1, HEIGHT - 1, world[mousePos.x][mousePos.y].description());
+        StdDraw.show();
+    }
+
+    //Display the left num of Heart
+    private void heartInfo() {
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.textRight(WIDTH, HEIGHT - 1, "Heart " + HEARTNUM);
         StdDraw.show();
     }
 

@@ -3,6 +3,9 @@ package byog.Core;
 //import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,6 @@ public class WorldGenerator {
         NewWorld.createWorld(world, random);
         ter.renderFrame(world);
     }
-
      */
 
     //Create a random world
@@ -41,12 +43,12 @@ public class WorldGenerator {
         Queue<Room> rooms = placeRoomsToWorld(world, random); // Step 2
         connectRoomsInWorld(world, rooms, random); // Step 3
         removeRedundantWalls(world); // Step 4
-        return addAvatar(world, rooms, random); // Step 5
+        return addPlayer(world, rooms, random); // Step 5
     }
 
     //Add an avatar to the world, within a random room
     //Return position of the avatar
-    private static Position addAvatar(TETile[][] world, Queue<Room> rooms, Random random) {
+    private static Position addPlayer(TETile[][] world, Queue<Room> rooms, Random random) {
         List<Room> birthPlaces = new ArrayList<>();
         for (Room room : rooms) {
             birthPlaces.add(room);
@@ -55,11 +57,11 @@ public class WorldGenerator {
         int i = random.nextInt(birthPlaces.size());
         Room birthRoom = birthPlaces.get(i);
         //Make sure that avatar does not born in wall.
-        int avatarX = birthRoom.pos.x + 1 + random.nextInt(birthRoom.width - 2);
-        int avatarY = birthRoom.pos.y + 1 + random.nextInt(birthRoom.height - 2);
-        world[avatarX][avatarY] = Tileset.GRASS;
+        int playerX = birthRoom.pos.x + 1 + random.nextInt(birthRoom.width - 2);
+        int playerY = birthRoom.pos.y + 1 + random.nextInt(birthRoom.height - 2);
+        world[playerX][playerY] = Tileset.PLAYER;
 
-        return new Position(avatarX, avatarY);
+        return new Position(playerX, playerY);
     }
 
 
