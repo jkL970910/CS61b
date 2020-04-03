@@ -17,8 +17,8 @@ public class Main {
             System.out.println(TETile.toString(worldState));
         } else {
             Game game = new Game();
-            System.out.println(TETile.toString(game.playWithInputString("Nsdesgfdf")));
-            //game.playWithKeyboard();
+            //System.out.println(TETile.toString(game.playWithInputString("Nsdesgfdf")));
+            game.playWithKeyboard();
         }
     }
 }

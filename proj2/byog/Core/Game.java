@@ -43,7 +43,7 @@ public class Game {
         if (action == 'N') {
             long seed = inputSeed(source);
             record.append(seed);
-            record.append('S');
+            record.append('S'); //Set the stop sign of the seed
             Random random = new Random(seed);
             avatarPos = WorldGenerator.createWorld(world, random);
             // If interacts with string, do not render.
