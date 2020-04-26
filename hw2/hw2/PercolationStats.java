@@ -13,24 +13,25 @@ public class PercolationStats {
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        check(N);
-        check(T);
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException("The N or T should not be less than 0");
+        }
 
         double[] results = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation uf = pf.make(N * N);
+            // use the constant numOfOpenSites to reduce the calls of methods
+            int numOfOpenSites = 0;
             while (!uf.percolates()) {
                 // generate random sites in until percolates
                 int row = StdRandom.uniform(N); // Start from line 1
                 int col = StdRandom.uniform(N);
-                // regenerate site if it is already open
-                while (uf.isOpen(row, col)) {
-                    row = StdRandom.uniform(N);
-                    col = StdRandom.uniform(N);
+                if (!uf.isOpen(row, col)) {
+                    uf.open(row, col);
+                    numOfOpenSites += 1;
                 }
-                uf.open(row, col);
             }
-            results[i] = (double) uf.numberOfOpenSites() / (N * N * 1.0);
+            results[i] = (double) numOfOpenSites / (N * N * 1.0);
         }
 
         mean = StdStats.mean(results);
@@ -59,9 +60,4 @@ public class PercolationStats {
         return confidenceHi;
     }
 
-    public void check(int num) {
-        if (num <= 0) {
-            throw new IllegalArgumentException("The N or T should not be less than 0");
-        }
-    }
 }

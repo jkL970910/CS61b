@@ -38,7 +38,7 @@ public class Percolation {
         int index = xyTo1D(row, col);
 
         //open the non-open site
-        if(!siteopen[index]) {
+        if (!siteopen[index]) {
             siteopen[index] = true;
             countOpen += 1;
         }
@@ -52,7 +52,6 @@ public class Percolation {
         if (row == n - 1) {
             virtualBottom = true;
         }
-
         // then check and connect the site with its neighbors
         // union the site with left neighbor
         if (col > 0 && siteopen[index - 1]) {
@@ -61,7 +60,8 @@ public class Percolation {
                 virtualTop = true;
             }
             // if the neighbor is connect bottom or the site is, validate the virtualBottom
-            if (!virtualBottom && isconnectBottom[uf.find(index - 1)] || isconnectBottom[uf.find(index)]) {
+            if (!virtualBottom && isconnectBottom[uf.find(index - 1)]
+                    || isconnectBottom[uf.find(index)]) {
                 virtualBottom = true;
             }
             uf.union(index, index - 1);
@@ -73,7 +73,8 @@ public class Percolation {
                 virtualTop = true;
             }
             // if the neighbor is connect bottom or the site is, validate the virtualBottom
-            if (!virtualBottom && isconnectBottom[uf.find(index + 1)] || isconnectBottom[uf.find(index)]) {
+            if (!virtualBottom && isconnectBottom[uf.find(index + 1)]
+                    || isconnectBottom[uf.find(index)]) {
                 virtualBottom = true;
             }
             uf.union(index, index + 1);
@@ -85,7 +86,8 @@ public class Percolation {
                 virtualTop = true;
             }
             // if the neighbor is connect bottom or the site is, validate the virtualBottom
-            if (!virtualBottom && isconnectBottom[uf.find(index - n)] || isconnectBottom[uf.find(index)]) {
+            if (!virtualBottom && isconnectBottom[uf.find(index - n)]
+                    || isconnectBottom[uf.find(index)]) {
                 virtualBottom = true;
             }
             uf.union(index, index - n);
@@ -97,16 +99,15 @@ public class Percolation {
                 virtualTop = true;
             }
             // if the neighbor is connect bottom or the site is, validate the virtualBottom
-            if (!virtualBottom && isconnectBottom[uf.find(index + n)] || isconnectBottom[uf.find(index)]) {
+            if (!virtualBottom && isconnectBottom[uf.find(index + n)]
+                    || isconnectBottom[uf.find(index)]) {
                 virtualBottom = true;
             }
             uf.union(index, index + n);
         }
-
         // set the status of the site
         isconnectTop[uf.find(index)] = virtualTop;
         isconnectBottom[uf.find(index)] = virtualBottom;
-
         // check whether the system is percolation
         if (!percolatesFlag && isconnectTop[uf.find(index)] && isconnectBottom[uf.find(index)]) {
             percolatesFlag = true;
@@ -136,22 +137,32 @@ public class Percolation {
     }
 
     //check the input N
-    public void check(int num) {
+    private void check(int num) {
         if (num <= 0) {
             throw new IllegalArgumentException("N could not be less than 0");
         }
     }
 
     //check whether the site is out of bounds
-    public void check(int x, int y) {
+    private void check(int x, int y) {
         if (x < 0 || x >= n || y < 0 || y >= n) {
             throw new IndexOutOfBoundsException("site must inside the grid");
         }
     }
 
     //transform xy to 1D
-    public int xyTo1D(int x, int y) {
+    private int xyTo1D(int x, int y) {
         check(x, y);
         return x * n + y;
+    }
+
+    // check main
+    public static void main(String[] args) {
+        PercolationFactory pf = new PercolationFactory();
+        PercolationStats ps = new PercolationStats(20, 10, pf);
+
+        System.out.println("meant = " + ps.mean());
+        System.out.println("stddev = " + ps.stddev());
+        System.out.println("95% confidcence interval = [" + ps.confidenceLow() + ", " + ps.confidenceHigh() + "]");
     }
 }
