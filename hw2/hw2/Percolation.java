@@ -158,11 +158,14 @@ public class Percolation {
 
     // check main
     public static void main(String[] args) {
+        /*
         PercolationFactory pf = new PercolationFactory();
         PercolationStats ps = new PercolationStats(20, 10, pf);
 
         System.out.println("meant = " + ps.mean());
         System.out.println("stddev = " + ps.stddev());
         System.out.println("95% confidcence interval = [" + ps.confidenceLow() + ", " + ps.confidenceHigh() + "]");
+
+         */
     }
 }
